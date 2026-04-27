@@ -1,2 +1,6 @@
 ﻿.DS_Store
 lazy-lock.json
+.codex
+.claude
+.nvimlog
+nvim.log

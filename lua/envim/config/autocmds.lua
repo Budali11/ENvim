@@ -21,7 +21,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     map("K", vim.lsp.buf.hover, "LSP Hover")
+    map("gd", vim.lsp.buf.definition, "Goto Definition")
     map("gD", vim.lsp.buf.declaration, "Goto Declaration")
+    map("gr", vim.lsp.buf.references, "References")
+    map("gi", vim.lsp.buf.implementation, "Goto Implementation")
     map("<leader>ca", vim.lsp.buf.code_action, "Code Action", { "n", "v" })
     map("<leader>cr", vim.lsp.buf.rename, "Rename Symbol")
     map("<leader>cf", function()

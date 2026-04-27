@@ -20,15 +20,22 @@
 
 ```text
 .
+├─ after
+│  ├─ ftplugin
+│  │  └─ asm.lua
+│  └─ syntax
+│     └─ asm.vim
 ├─ init.lua
 └─ lua
    └─ envim
       ├─ config
       │  ├─ autocmds.lua
+      │  ├─ filetypes.lua
       │  ├─ keymaps.lua
       │  ├─ lazy.lua
       │  ├─ options.lua
       │  ├─ profiles.lua
+      │  ├─ statusline.lua
       │  └─ ui.lua
       ├─ core
       │  └─ profile.lua
@@ -52,9 +59,29 @@
 - `lua/envim/plugins/*`：所有 **通用插件**
 - `lua/envim/config/keymaps.lua`：所有 **通用快捷键**
 - `lua/envim/config/ui.lua`：所有 **通用 UI 参数**
+- `lua/envim/config/statusline.lua`：底部 **全局状态栏**
+- `lua/envim/config/filetypes.lua`：额外 **filetype 识别**
 - `lua/envim/profiles/<name>/*`：某个 profile 独有的配置、辅助函数、插件
+- `after/syntax/asm.vim`：对内置 `asm` 语法的 **后置覆盖**
+- `after/ftplugin/asm.lua`：对 `asm` filetype 的 **后置 buffer-local 设置**
 
 也就是说，现在 UI 相关的可调参数会集中放在 `config/ui.lua`，公共能力仍然留在 profile 外面。
+
+### `after/` 目录说明
+
+`after/` 是 Neovim 的标准覆盖机制。
+
+- 先加载 runtime 里原本的 `syntax/asm.vim`、`ftplugin/asm.vim`
+- 再加载本配置里的 `after/syntax/asm.vim`、`after/ftplugin/asm.lua`
+
+这个仓库现在用它来修正 ARM GNU assembler 的阅读体验：
+
+- `.s` / `.S` / `.asm` 统一识别为 `asm`
+- 禁用 Treesitter 的 `asm` 高亮
+- 回退到 Neovim 内置 `asm` 语法
+- 再通过 `after/syntax/asm.vim` 把 ARM 注释规则覆盖成 `@`
+- 保留 `#1` 这类立即数和 `#include` / `#ifdef` 这类预处理行不被误判为注释
+- 通过 `after/ftplugin/asm.lua` 设置 `commentstring = "@ %s"`
 
 ## UI 配置入口
 
@@ -87,17 +114,19 @@ notifier = {
 3. **方便装插件**：`lazy.nvim`
 4. **File Explorer**：`Snacks.explorer()`
 5. **消息提醒弹窗**：`snacks.nvim` notifier
-6. **Tab / Buffer 管理**：`bufferline.nvim`
-7. **LSP**：`mason.nvim + mason-lspconfig.nvim + nvim-lspconfig`
-8. **搜索**：
+6. **底部状态栏**：单条全局 statusline，显示当前 Profile / LSP / 诊断 / 文件信息
+7. **Tab / Buffer 管理**：`bufferline.nvim`
+8. **LSP**：`mason.nvim + mason-lspconfig.nvim + nvim-lspconfig`，C/C++ 使用 `clangd`
+9. **搜索**：
    - `<leader>ff` 文件搜索
    - `<leader>fg` 全局文本搜索
    - `<leader>fw` 搜索当前光标单词 / 选中文本
-9. **平滑滚动**：`neoscroll.nvim`
-10. **缩进提示线**：`indent-blankline.nvim`
-11. **AI Coding**：`copilot.lua + CopilotChat.nvim`
-12. **嵌入式 C/C++**：`cmake-tools.nvim + overseer.nvim + toggleterm.nvim + nvim-dap + trouble.nvim`
-13. **快捷键扩展**：`which-key.nvim` + `jk -> <Esc>`
+10. **ARM 汇编阅读**：`.s` / `.S` / `.asm` 使用 `asm` filetype，禁用 Treesitter asm 高亮，采用 ARM 注释规则 `@`
+11. **平滑滚动**：`neoscroll.nvim`
+12. **缩进提示线**：`indent-blankline.nvim`
+13. **AI Coding**：`copilot.lua + CopilotChat.nvim`
+14. **嵌入式 C/C++**：`cmake-tools.nvim + overseer.nvim + toggleterm.nvim + nvim-dap + trouble.nvim`
+15. **快捷键扩展**：`which-key.nvim` + `jk -> <Esc>`
 
 ## Profile 说明
 
@@ -115,13 +144,14 @@ Profile 定义在 `lua/envim/config/profiles.lua`。
 - `:ENProfile embedded` 切换到 `embedded`
 - `:ENProfilePick` 选择 profile
 
-切换后建议执行：
+切换后会立即应用到当前 Neovim 会话：
 
-```vim
-:Lazy sync
-```
+- 重新解析 `lazy.nvim` 插件集合
+- 注册新 profile 的 lazy-load 触发器
+- 对当前 buffer 主动刷新 `FileType`
+- 如果新 profile 启用了 `coding`，会加载 LSP 并执行 `:LspStart`
 
-然后重启 Neovim，使插件集合完全切换。
+限制：Neovim 运行中已经加载过的插件不能被真正卸载；切到更轻量的 profile 后，新的插件集合和后续 buffer 会按新 profile 运行，但已加载插件的内存状态会保留到退出 Neovim。
 
 ## Embedded Profile
 
@@ -225,7 +255,7 @@ return {
 - `<S-Tab>`：切到上一个 buffer
 - `<leader>bd`：关闭当前 buffer
 - `<leader>to`：新建 tab
-- `<leader>tx`：关闭 tab
+- `<leader>tx`：多 tab 时关闭当前 tab；单 tab 时关闭当前 buffer
 
 ### LSP
 

@@ -8,6 +8,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       ensure_installed = {
+        "asm",
         "bash",
         "c",
         "cpp",
@@ -22,7 +23,10 @@ return {
         "vim",
         "vimdoc",
       },
-      highlight = { enable = true },
+      highlight = {
+        enable = true,
+        disable = { "asm" },
+      },
       indent = { enable = true },
     },
     config = function(_, opts)

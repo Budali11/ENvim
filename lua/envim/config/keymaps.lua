@@ -1,5 +1,22 @@
 ﻿local map = vim.keymap.set
 
+local function close_tab_or_buffer()
+  if vim.fn.tabpagenr("$") > 1 then
+    vim.cmd.tabclose()
+    return
+  end
+
+  local ok, bufdelete = pcall(function()
+    return Snacks.bufdelete
+  end)
+  if ok and bufdelete then
+    bufdelete()
+    return
+  end
+
+  vim.cmd.bdelete()
+end
+
 map("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Write file" })
@@ -12,7 +29,7 @@ map("n", "<leader>k", "<C-w>k", { desc = "Window up" })
 map("n", "<leader>l", "<C-w>l", { desc = "Window right" })
 
 map("n", "<leader>to", "<cmd>tabnew<cr>", { desc = "New tab" })
-map("n", "<leader>tx", "<cmd>tabclose<cr>", { desc = "Close tab" })
+map("n", "<leader>tx", close_tab_or_buffer, { desc = "Close tab or buffer" })
 map("n", "<leader>tn", "<cmd>tabnext<cr>", { desc = "Next tab" })
 map("n", "<leader>tp", "<cmd>tabprevious<cr>", { desc = "Previous tab" })
 

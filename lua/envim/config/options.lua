@@ -29,6 +29,8 @@ opt.timeoutlen = 300
 opt.completeopt = { "menu", "menuone", "noselect", "popup" }
 opt.clipboard = "unnamedplus"
 
+require("envim.config.statusline").setup()
+
 vim.diagnostic.config({
   severity_sort = true,
   float = { border = "rounded" },

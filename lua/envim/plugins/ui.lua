@@ -91,7 +91,7 @@ return {
     keys = {
       { "<Tab>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
       { "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous Buffer" },
-      { "<leader>bd", "<cmd>bdelete<cr>", desc = "Delete Buffer" },
+      { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
       { "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick Buffer" },
     },
   },

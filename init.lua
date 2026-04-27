@@ -1,5 +1,6 @@
 ﻿require("envim.core.profile").setup()
 require("envim.config.options")
+require("envim.config.filetypes")
 require("envim.config.autocmds")
 require("envim.config.keymaps")
 require("envim.config.lazy")

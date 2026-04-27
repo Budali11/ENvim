@@ -4,6 +4,7 @@ return {
   {
     "mason-org/mason-lspconfig.nvim",
     enabled = profile.enabled("coding"),
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
