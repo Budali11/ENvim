@@ -74,6 +74,34 @@ return {
     },
   },
   {
+    "hedyhli/outline.nvim",
+    enabled = profile.enabled("coding"),
+    cmd = { "Outline", "OutlineOpen" },
+    keys = {
+      { "<leader>co", "<cmd>Outline<cr>", desc = "Code Outline" },
+    },
+    opts = {
+      outline_window = {
+        position = "right",
+        width = 28,
+        auto_close = false,
+        focus_on_open = false,
+      },
+      outline_items = {
+        show_symbol_lineno = false,
+      },
+      preview_window = {
+        auto_preview = false,
+      },
+      symbol_folding = {
+        autofold_depth = 1,
+        auto_unfold = {
+          hovered = true,
+        },
+      },
+    },
+  },
+  {
     "akinsho/bufferline.nvim",
     enabled = profile.enabled("ui"),
     event = "VeryLazy",

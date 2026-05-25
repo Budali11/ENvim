@@ -122,11 +122,12 @@ notifier = {
    - `<leader>fg` 全局文本搜索
    - `<leader>fw` 搜索当前光标单词 / 选中文本
 10. **ARM 汇编阅读**：`.s` / `.S` / `.asm` 使用 `asm` filetype，禁用 Treesitter asm 高亮，采用 ARM 注释规则 `@`
-11. **平滑滚动**：`neoscroll.nvim`
-12. **缩进提示线**：`indent-blankline.nvim`
-13. **AI Coding**：`copilot.lua + CopilotChat.nvim`
-14. **嵌入式 C/C++**：`cmake-tools.nvim + overseer.nvim + toggleterm.nvim + nvim-dap + trouble.nvim`
-15. **快捷键扩展**：`which-key.nvim` + `jk -> <Esc>`
+11. **代码大纲侧栏**：`outline.nvim`，列出函数/类型/符号树并支持回车跳转
+12. **平滑滚动**：`neoscroll.nvim`
+13. **缩进提示线**：`indent-blankline.nvim`
+14. **AI Coding**：`copilot.lua + CopilotChat.nvim`
+15. **嵌入式 C/C++**：`cmake-tools.nvim + overseer.nvim + toggleterm.nvim + nvim-dap + trouble.nvim`
+16. **快捷键扩展**：`which-key.nvim` + `jk -> <Esc>`
 
 ## Profile 说明
 
@@ -266,6 +267,7 @@ return {
 - `<leader>ca`：Code Action
 - `<leader>cr`：Rename
 - `<leader>cf`：格式化
+- `<leader>co`：打开/关闭代码大纲侧栏（函数/类型/符号）
 
 ### Profile / 插件
 
