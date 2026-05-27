@@ -19,6 +19,11 @@ end
 
 map("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
+map("i", "<C-h>", "<Left>",  { desc = "Move left" })
+map("i", "<C-j>", "<Down>",  { desc = "Move down" })
+map("i", "<C-k>", "<Up>",    { desc = "Move up" })
+map("i", "<C-l>", "<Right>", { desc = "Move right" })
+
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Write file" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit window" })
 map("n", "<leader>Q", "<cmd>qa!<cr>", { desc = "Quit all" })
