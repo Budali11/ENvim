@@ -121,6 +121,7 @@ return {
       { "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous Buffer" },
       { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
       { "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick Buffer" },
+      { "<leader>bR", "<cmd>BufferLineCloseRight<cr>", desc = "Close Buffers to the Right" },
     },
   },
   {

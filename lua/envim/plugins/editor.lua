@@ -33,4 +33,13 @@ return {
       require("nvim-treesitter").setup(opts)
     end,
   },
+  {
+    "windwp/nvim-autopairs",
+    enabled = profile.enabled("coding"),
+    event = "InsertEnter",
+    opts = {
+      check_ts = true,
+      fast_wrap = {},
+    },
+  },
 }

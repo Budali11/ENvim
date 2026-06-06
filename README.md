@@ -9,6 +9,8 @@
 - 通知弹窗
 - Buffer/Tab 管理
 - LSP
+- 代码补全
+- 自动配对括号/引号
 - 文件/文本搜索
 - 平滑滚动动画
 - 缩进提示线
@@ -42,6 +44,7 @@
       ├─ plugins
       │  ├─ ai.lua
       │  ├─ colorscheme.lua
+      │  ├─ completion.lua
       │  ├─ editor.lua
       │  ├─ lsp.lua
       │  ├─ ui.lua
@@ -117,17 +120,19 @@ notifier = {
 6. **底部状态栏**：单条全局 statusline，显示当前 Profile / LSP / 诊断 / 文件信息
 7. **Tab / Buffer 管理**：`bufferline.nvim`
 8. **LSP**：`mason.nvim + mason-lspconfig.nvim + nvim-lspconfig`，C/C++ 使用 `clangd`
-9. **搜索**：
-   - `<leader>ff` 文件搜索
-   - `<leader>fg` 全局文本搜索
-   - `<leader>fw` 搜索当前光标单词 / 选中文本
-10. **ARM 汇编阅读**：`.s` / `.S` / `.asm` 使用 `asm` filetype，禁用 Treesitter asm 高亮，采用 ARM 注释规则 `@`
-11. **代码大纲侧栏**：`outline.nvim`，列出函数/类型/符号树并支持回车跳转
-12. **平滑滚动**：`neoscroll.nvim`
-13. **缩进提示线**：`indent-blankline.nvim`
-14. **AI Coding**：`copilot.lua + CopilotChat.nvim`
-15. **嵌入式 C/C++**：`cmake-tools.nvim + overseer.nvim + toggleterm.nvim + nvim-dap + trouble.nvim`
-16. **快捷键扩展**：`which-key.nvim` + `jk -> <Esc>`
+9. **代码补全**：`blink.cmp + friendly-snippets`，由 `coding` 能力门控（`default` / `embedded` / `full` 均启用），补全源为 LSP / 路径 / 代码片段 / buffer
+10. **自动配对括号/引号**：`nvim-autopairs`，由 `coding` 能力门控，结合 Treesitter 判断上下文，支持 `<M-e>` 快速包裹
+11. **搜索**：
+    - `<leader>ff` 文件搜索
+    - `<leader>fg` 全局文本搜索
+    - `<leader>fw` 搜索当前光标单词 / 选中文本
+12. **ARM 汇编阅读**：`.s` / `.S` / `.asm` 使用 `asm` filetype，禁用 Treesitter asm 高亮，采用 ARM 注释规则 `@`
+13. **代码大纲侧栏**：`outline.nvim`，列出函数/类型/符号树并支持回车跳转
+14. **平滑滚动**：`neoscroll.nvim`
+15. **缩进提示线**：`indent-blankline.nvim`
+16. **AI Coding**：`copilot.lua + CopilotChat.nvim`
+17. **嵌入式 C/C++**：`cmake-tools.nvim + overseer.nvim + toggleterm.nvim + nvim-dap + trouble.nvim`
+18. **快捷键扩展**：`which-key.nvim` + `jk -> <Esc>`
 
 ## Profile 说明
 
@@ -239,6 +244,7 @@ return {
 ### 基础
 
 - `jk`：退出插入模式
+- `<C-h>` / `<C-j>` / `<C-k>` / `<C-l>`：插入模式下左 / 下 / 上 / 右移动光标
 - `<leader>w`：保存
 - `<leader>q`：退出当前窗口
 
@@ -255,6 +261,8 @@ return {
 - `<Tab>`：切到下一个 buffer
 - `<S-Tab>`：切到上一个 buffer
 - `<leader>bd`：关闭当前 buffer
+- `<leader>bp`：按字母选取 buffer
+- `<leader>bR`：关闭当前 buffer 右侧的所有 buffer
 - `<leader>to`：新建 tab
 - `<leader>tx`：多 tab 时关闭当前 tab；单 tab 时关闭当前 buffer
 
@@ -268,6 +276,14 @@ return {
 - `<leader>cr`：Rename
 - `<leader>cf`：格式化
 - `<leader>co`：打开/关闭代码大纲侧栏（函数/类型/符号）
+
+### 代码补全（`blink.cmp`）
+
+- 输入时自动弹出补全框
+- `<Tab>` / `<S-Tab>`：选择下一个 / 上一个候选，同时跳转代码片段占位符
+- `<CR>`：确认补全
+- `<C-space>`：手动触发补全 / 切换文档浮窗
+- `<C-e>`：关闭补全框
 
 ### Profile / 插件
 
