@@ -328,5 +328,5 @@ lua/envim/profiles/<profile>/
 2. 切到 `embedded` profile（如果你要做嵌入式开发）
 3. 等待 `lazy.nvim` 自动安装插件
 4. 执行 `:Mason`
-5. 安装/确认 `clangd`
+5. 安装系统 `clangd`，并确认 `clangd` 命令已加入 `PATH`
 6. 准备本机工具链：`arm-none-eabi-gdb`、`openocd`、CMake / Make

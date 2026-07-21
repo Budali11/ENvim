@@ -12,7 +12,6 @@ return {
     opts = {
       ensure_installed = {
         "bashls",
-        "clangd",
         "jsonls",
         "lua_ls",
         "pyright",
